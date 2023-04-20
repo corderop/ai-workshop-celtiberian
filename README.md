@@ -1,4 +1,5 @@
 # python-skeleton
+
 Custom python skeleton for personal projects
 
 ## How to use
@@ -13,4 +14,10 @@ pip install -r requirements
 
 ```bash
 pre-commit install
+```
+
+3. Run the app
+
+```bash
+uvicorn src.main:app --reload
 ```
