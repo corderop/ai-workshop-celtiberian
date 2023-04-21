@@ -1,6 +1,3 @@
-from .repository import PhrasesRepository
-
-
 class PhrasesService:
     def __get_readable_author(self, authors):
         authors_list = authors.split(",")
@@ -12,10 +9,7 @@ class PhrasesService:
             authors_str += f" y {authors_list[-1]}"
             return authors_str
 
-    def get_readable_sentences(self):
-        repository = PhrasesRepository()
-        phrases = repository.get_all()
-
+    def get_readable_phrases(self, phrases):
         return [
             f'"{p["phrase"]}" por {self.__get_readable_author(p["author"])}'
             for p in phrases

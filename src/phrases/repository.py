@@ -31,3 +31,6 @@ class PhrasesRepository:
             authors = [*authors, *phrase["author"].split(",")]
 
         return sorted(set(authors))
+
+    def get_author_phrases(self, author: str):
+        return [p["phrase"] for p in self.__phrases if p["author"] == author]
