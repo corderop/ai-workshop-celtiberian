@@ -10,11 +10,6 @@ app = FastAPI()
 openai.api_key = API_KEY
 
 
-@app.get("/")
-def root():
-    return API_KEY
-
-
 @app.get("/summary")
 def getSummary(
     phrase: str, key_points: Annotated[Union[list[str], None], Query()] = None
