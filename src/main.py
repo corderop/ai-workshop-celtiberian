@@ -1,23 +1,31 @@
-from fastapi import FastAPI
+from typing import Annotated, Union
 
-from .phrases.repository import PhrasesRepository
+from fastapi import FastAPI, Query
+
+import openai
+
+from .config import API_KEY
 
 app = FastAPI()
+
+openai.api_key = API_KEY
 
 
 @app.get("/")
 def root():
-    repository = PhrasesRepository()
-    return repository.get_all()
+    return API_KEY
 
 
-@app.get("/authors/phrases")
-def author_phrases(author_name: str, readable: bool = False):
-    repository = PhrasesRepository()
-    return repository.get_author_phrases(author_name)
+@app.get("/summary")
+def getSummary(
+    phrase: str, key_points: Annotated[Union[list[str], None], Query()] = None
+):
+    prompt = (
+        f"Genera un post LinkedIn de entre 200 y 500 palabras sobre un seminario titulado: {phrase}"
+        f"con los siguientes puntos clave: {', '.join(key_points)}"
+    )
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}]
+    )
 
-
-@app.get("/authors")
-def authors():
-    repository = PhrasesRepository()
-    return repository.get_all_authors()
+    return completion.choices[0].message.content
